@@ -1,0 +1,738 @@
+definitions:
+  models.Hamburguer:
+    properties:
+      descricao:
+        type: string
+      id:
+        type: integer
+      ingredientes:
+        items:
+          $ref: '#/definitions/models.HamburguerIngrediente'
+        type: array
+      preco:
+        type: number
+    required:
+    - descricao
+    - preco
+    type: object
+  models.HamburguerIngrediente:
+    properties:
+      hamburguerID:
+        type: integer
+      item:
+        $ref: '#/definitions/models.Item'
+      itemID:
+        type: integer
+      quantidade:
+        type: integer
+    type: object
+  models.HamburguerRequest:
+    properties:
+      descricao:
+        type: string
+      id:
+        type: integer
+      ingredientes:
+        items:
+          $ref: '#/definitions/models.IngredienteRequest'
+        minItems: 1
+        type: array
+      preco:
+        type: number
+    required:
+    - descricao
+    - id
+    - ingredientes
+    - preco
+    type: object
+  models.HamburguerUpdateRequest:
+    properties:
+      descricao:
+        type: string
+      ingredientes:
+        items:
+          $ref: '#/definitions/models.IngredienteRequest'
+        minItems: 1
+        type: array
+      preco:
+        type: number
+    required:
+    - descricao
+    - ingredientes
+    - preco
+    type: object
+  models.IngredienteRequest:
+    properties:
+      id:
+        type: integer
+      quantidade:
+        minimum: 1
+        type: integer
+    required:
+    - id
+    - quantidade
+    type: object
+  models.Item:
+    properties:
+      descricao:
+        type: string
+      extra:
+        description: true para "Com açúcar" em bebidas ou "Adicional" em ingredientes
+        type: boolean
+      id:
+        type: integer
+      preco:
+        type: number
+      tipo:
+        $ref: '#/definitions/models.TipoItem'
+    type: object
+  models.ItemRequest:
+    properties:
+      descricao:
+        type: string
+      extra:
+        type: boolean
+      id:
+        type: integer
+      preco:
+        type: number
+      tipo:
+        type: string
+    required:
+    - descricao
+    - extra
+    - id
+    - preco
+    - tipo
+    type: object
+  models.ItemResponse:
+    properties:
+      descricao:
+        type: string
+      extra:
+        type: boolean
+      id:
+        type: integer
+      preco:
+        type: number
+      tipo:
+        type: string
+    type: object
+  models.ItemUpdateRequest:
+    properties:
+      descricao:
+        type: string
+      extra:
+        type: boolean
+      preco:
+        type: number
+    required:
+    - descricao
+    - extra
+    - preco
+    type: object
+  models.PedidoBebida:
+    properties:
+      bebida:
+        $ref: '#/definitions/models.Item'
+      itemID:
+        type: integer
+      pedidoID:
+        type: string
+      quantidade:
+        type: integer
+    type: object
+  models.PedidoHamburguer:
+    properties:
+      hamburguer:
+        $ref: '#/definitions/models.Hamburguer'
+      hamburguerID:
+        type: integer
+      pedidoID:
+        type: string
+      quantidade:
+        type: integer
+    type: object
+  models.PedidoItemRequest:
+    properties:
+      id:
+        type: integer
+      quantidade:
+        minimum: 1
+        type: integer
+    required:
+    - id
+    - quantidade
+    type: object
+  models.PedidoRequest:
+    properties:
+      bebidas:
+        items:
+          $ref: '#/definitions/models.PedidoItemRequest'
+        type: array
+      descricao:
+        type: string
+      endereco:
+        type: string
+      hamburgueres:
+        items:
+          $ref: '#/definitions/models.PedidoItemRequest'
+        minItems: 1
+        type: array
+      nome:
+        type: string
+      observacoes:
+        type: string
+      telefone:
+        type: string
+    required:
+    - descricao
+    - endereco
+    - hamburgueres
+    - nome
+    - telefone
+    type: object
+  models.PedidoResponse:
+    properties:
+      bebidas:
+        items:
+          $ref: '#/definitions/models.PedidoBebida'
+        type: array
+      data:
+        type: string
+      descricao:
+        type: string
+      endereco:
+        type: string
+      hamburgueres:
+        items:
+          $ref: '#/definitions/models.PedidoHamburguer'
+        type: array
+      id:
+        type: string
+      nome:
+        type: string
+      observacoes:
+        type: string
+      status:
+        $ref: '#/definitions/models.StatusPedido'
+      telefone:
+        type: string
+      valor_total:
+        type: number
+    type: object
+  models.PedidoUpdateRequest:
+    properties:
+      bebidas:
+        items:
+          $ref: '#/definitions/models.PedidoItemRequest'
+        type: array
+      descricao:
+        type: string
+      endereco:
+        type: string
+      hamburgueres:
+        items:
+          $ref: '#/definitions/models.PedidoItemRequest'
+        type: array
+      nome:
+        type: string
+      observacoes:
+        type: string
+      status:
+        $ref: '#/definitions/models.StatusPedido'
+      telefone:
+        type: string
+    type: object
+  models.StatusPedido:
+    enum:
+    - STARTED
+    - DELIVERY
+    - FINALIZED
+    type: string
+    x-enum-varnames:
+    - StatusStarted
+    - StatusDelivery
+    - StatusFinalized
+  models.TipoItem:
+    enum:
+    - BEBIDA
+    - INGREDIENTE
+    type: string
+    x-enum-varnames:
+    - TipoBebida
+    - TipoIngrediente
+info:
+  contact: {}
+paths:
+  /hamburguers:
+    get:
+      consumes:
+      - application/json
+      description: Retorna uma lista de todos os hamburgueres disponíveis
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Hamburguer'
+            type: array
+      summary: Lista todos os hamburgueres
+      tags:
+      - hamburgueres
+    post:
+      consumes:
+      - application/json
+      description: Cria um novo hamburguer com os dados fornecidos
+      parameters:
+      - description: Dados do Hamburguer
+        in: body
+        name: hamburguer
+        required: true
+        schema:
+          $ref: '#/definitions/models.HamburguerRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.Hamburguer'
+        "400":
+          description: Erro na validação dos dados
+          schema:
+            type: string
+        "404":
+          description: Ingrediente não encontrado
+          schema:
+            type: string
+      summary: Cria um novo hamburguer
+      tags:
+      - hamburgueres
+  /hamburguers/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Deleta um hamburguer existente
+      parameters:
+      - description: ID do Hamburguer
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Erro ao deletar hamburguer
+          schema:
+            type: string
+        "404":
+          description: Hamburguer não encontrado
+          schema:
+            type: string
+      summary: Deleta um hamburguer
+      tags:
+      - hamburgueres
+    get:
+      consumes:
+      - application/json
+      description: Retorna um hamburguer específico baseado no ID
+      parameters:
+      - description: ID do Hamburguer
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Hamburguer'
+        "404":
+          description: Hamburguer não encontrado
+          schema:
+            type: string
+      summary: Busca um hamburguer por ID
+      tags:
+      - hamburgueres
+    put:
+      consumes:
+      - application/json
+      description: Atualiza um hamburguer existente com os dados fornecidos
+      parameters:
+      - description: ID do Hamburguer
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Dados do Hamburguer
+        in: body
+        name: hamburguer
+        required: true
+        schema:
+          $ref: '#/definitions/models.HamburguerUpdateRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Hamburguer'
+        "400":
+          description: Erro na validação dos dados
+          schema:
+            type: string
+        "404":
+          description: Hamburguer não encontrado
+          schema:
+            type: string
+      summary: Atualiza um hamburguer existente
+      tags:
+      - hamburgueres
+  /hamburguers/nome/{nome}:
+    get:
+      consumes:
+      - application/json
+      description: Retorna um hamburguer específico baseado no nome
+      parameters:
+      - description: Nome do Hamburguer
+        in: path
+        name: nome
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Hamburguer'
+        "404":
+          description: Not Found
+          schema:
+            type: string
+      summary: Busca um hamburguer por nome
+      tags:
+      - hamburgueres
+  /itens:
+    post:
+      consumes:
+      - application/json
+      description: Cria um novo item (bebida ou ingrediente) com os dados fornecidos
+      parameters:
+      - description: Dados do Item
+        in: body
+        name: item
+        required: true
+        schema:
+          $ref: '#/definitions/models.ItemRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.ItemResponse'
+        "400":
+          description: Erro na validação dos dados
+          schema:
+            type: string
+      summary: Cria um novo item
+      tags:
+      - itens
+  /itens/{codigo}:
+    delete:
+      consumes:
+      - application/json
+      description: Remove um item (bebida ou ingrediente) existente pelo código
+      parameters:
+      - description: Código do item
+        in: path
+        name: codigo
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Item removido com sucesso
+          schema:
+            type: string
+        "400":
+          description: Código inválido
+          schema:
+            type: string
+        "404":
+          description: Item não encontrado
+          schema:
+            type: string
+      summary: Deleta um item existente
+      tags:
+      - itens
+    get:
+      consumes:
+      - application/json
+      description: Retorna um item específico (bebida ou ingrediente) buscando por
+        código
+      parameters:
+      - description: Código do item
+        in: path
+        name: codigo
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.ItemResponse'
+        "400":
+          description: Código inválido
+          schema:
+            type: string
+        "404":
+          description: Item não encontrado
+          schema:
+            type: string
+      summary: Busca um item por código
+      tags:
+      - itens
+    put:
+      consumes:
+      - application/json
+      description: Atualiza um item (bebida ou ingrediente) existente
+      parameters:
+      - description: Código do item
+        in: path
+        name: codigo
+        required: true
+        type: string
+      - description: Dados do Item
+        in: body
+        name: item
+        required: true
+        schema:
+          $ref: '#/definitions/models.ItemUpdateRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.ItemResponse'
+        "400":
+          description: Código inválido
+          schema:
+            type: string
+        "404":
+          description: Item não encontrado
+          schema:
+            type: string
+      summary: Atualiza um item existente
+      tags:
+      - itens
+  /itens/bebidas:
+    get:
+      consumes:
+      - application/json
+      description: Retorna uma lista de todas as bebidas disponíveis
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.ItemResponse'
+            type: array
+        "404":
+          description: Nenhuma bebida encontrada
+          schema:
+            type: string
+      summary: Lista todas as bebidas
+      tags:
+      - itens
+  /itens/ingredientes:
+    get:
+      consumes:
+      - application/json
+      description: Retorna uma lista de todos os ingredientes disponíveis
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.ItemResponse'
+            type: array
+        "404":
+          description: Nenhum ingrediente encontrado
+          schema:
+            type: string
+      summary: Lista todos os ingredientes
+      tags:
+      - itens
+  /itens/todos:
+    get:
+      consumes:
+      - application/json
+      description: Retorna uma lista de todos os itens (bebidas e ingredientes)
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.ItemResponse'
+            type: array
+        "404":
+          description: Nenhum item encontrado
+          schema:
+            type: string
+      summary: Lista todos os itens
+      tags:
+      - itens
+  /pedidos:
+    get:
+      consumes:
+      - application/json
+      description: Retorna uma lista de todos os pedidos cadastrados, com opção de
+        filtrar por status não finalizado
+      parameters:
+      - description: Filtrar por status não finalizado (true/false)
+        in: query
+        name: status
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.PedidoResponse'
+            type: array
+      summary: Lista todos os pedidos
+      tags:
+      - pedidos
+    post:
+      consumes:
+      - application/json
+      description: Cria um novo pedido com os dados fornecidos
+      parameters:
+      - description: Dados do Pedido
+        in: body
+        name: pedido
+        required: true
+        schema:
+          $ref: '#/definitions/models.PedidoRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.PedidoResponse'
+        "400":
+          description: Erro na validação dos dados
+          schema:
+            type: string
+      summary: Cria um novo pedido
+      tags:
+      - pedidos
+  /pedidos/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Deleta um pedido existente
+      parameters:
+      - description: ID do Pedido
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Erro ao deletar pedido
+          schema:
+            type: string
+        "404":
+          description: Pedido não encontrado
+          schema:
+            type: string
+      summary: Deleta um pedido
+      tags:
+      - pedidos
+    get:
+      consumes:
+      - application/json
+      description: Retorna um pedido específico baseado no ID
+      parameters:
+      - description: ID do Pedido
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.PedidoResponse'
+        "404":
+          description: Pedido não encontrado
+          schema:
+            type: string
+      summary: Busca um pedido por ID
+      tags:
+      - pedidos
+    put:
+      consumes:
+      - application/json
+      description: Atualiza um pedido existente com os dados fornecidos
+      parameters:
+      - description: ID do Pedido
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Dados do Pedido
+        in: body
+        name: pedido
+        required: true
+        schema:
+          $ref: '#/definitions/models.PedidoUpdateRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.PedidoResponse'
+        "400":
+          description: Erro na validação dos dados
+          schema:
+            type: string
+        "404":
+          description: Pedido não encontrado
+          schema:
+            type: string
+      summary: Atualiza um pedido existente
+      tags:
+      - pedidos
+swagger: "2.0"

@@ -1,0 +1,1106 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "contact": {}
+    },
+    "paths": {
+        "/hamburguers": {
+            "get": {
+                "description": "Retorna uma lista de todos os hamburgueres disponíveis",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "hamburgueres"
+                ],
+                "summary": "Lista todos os hamburgueres",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Hamburguer"
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Cria um novo hamburguer com os dados fornecidos",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "hamburgueres"
+                ],
+                "summary": "Cria um novo hamburguer",
+                "parameters": [
+                    {
+                        "description": "Dados do Hamburguer",
+                        "name": "hamburguer",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.HamburguerRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/models.Hamburguer"
+                        }
+                    },
+                    "400": {
+                        "description": "Erro na validação dos dados",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "Ingrediente não encontrado",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/hamburguers/nome/{nome}": {
+            "get": {
+                "description": "Retorna um hamburguer específico baseado no nome",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "hamburgueres"
+                ],
+                "summary": "Busca um hamburguer por nome",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Nome do Hamburguer",
+                        "name": "nome",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Hamburguer"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/hamburguers/{id}": {
+            "get": {
+                "description": "Retorna um hamburguer específico baseado no ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "hamburgueres"
+                ],
+                "summary": "Busca um hamburguer por ID",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID do Hamburguer",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Hamburguer"
+                        }
+                    },
+                    "404": {
+                        "description": "Hamburguer não encontrado",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "Atualiza um hamburguer existente com os dados fornecidos",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "hamburgueres"
+                ],
+                "summary": "Atualiza um hamburguer existente",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID do Hamburguer",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Dados do Hamburguer",
+                        "name": "hamburguer",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.HamburguerUpdateRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Hamburguer"
+                        }
+                    },
+                    "400": {
+                        "description": "Erro na validação dos dados",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "Hamburguer não encontrado",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "Deleta um hamburguer existente",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "hamburgueres"
+                ],
+                "summary": "Deleta um hamburguer",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID do Hamburguer",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    },
+                    "400": {
+                        "description": "Erro ao deletar hamburguer",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "Hamburguer não encontrado",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/itens": {
+            "post": {
+                "description": "Cria um novo item (bebida ou ingrediente) com os dados fornecidos",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "itens"
+                ],
+                "summary": "Cria um novo item",
+                "parameters": [
+                    {
+                        "description": "Dados do Item",
+                        "name": "item",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.ItemRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/models.ItemResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Erro na validação dos dados",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/itens/bebidas": {
+            "get": {
+                "description": "Retorna uma lista de todas as bebidas disponíveis",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "itens"
+                ],
+                "summary": "Lista todas as bebidas",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.ItemResponse"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Nenhuma bebida encontrada",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/itens/ingredientes": {
+            "get": {
+                "description": "Retorna uma lista de todos os ingredientes disponíveis",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "itens"
+                ],
+                "summary": "Lista todos os ingredientes",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.ItemResponse"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Nenhum ingrediente encontrado",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/itens/todos": {
+            "get": {
+                "description": "Retorna uma lista de todos os itens (bebidas e ingredientes)",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "itens"
+                ],
+                "summary": "Lista todos os itens",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.ItemResponse"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Nenhum item encontrado",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/itens/{codigo}": {
+            "get": {
+                "description": "Retorna um item específico (bebida ou ingrediente) buscando por código",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "itens"
+                ],
+                "summary": "Busca um item por código",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Código do item",
+                        "name": "codigo",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.ItemResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Código inválido",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "Item não encontrado",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "Atualiza um item (bebida ou ingrediente) existente",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "itens"
+                ],
+                "summary": "Atualiza um item existente",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Código do item",
+                        "name": "codigo",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Dados do Item",
+                        "name": "item",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.ItemUpdateRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.ItemResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Código inválido",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "Item não encontrado",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "Remove um item (bebida ou ingrediente) existente pelo código",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "itens"
+                ],
+                "summary": "Deleta um item existente",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Código do item",
+                        "name": "codigo",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Item removido com sucesso",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Código inválido",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "Item não encontrado",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/pedidos": {
+            "get": {
+                "description": "Retorna uma lista de todos os pedidos cadastrados, com opção de filtrar por status não finalizado",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "pedidos"
+                ],
+                "summary": "Lista todos os pedidos",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Filtrar por status não finalizado (true/false)",
+                        "name": "status",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.PedidoResponse"
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Cria um novo pedido com os dados fornecidos",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "pedidos"
+                ],
+                "summary": "Cria um novo pedido",
+                "parameters": [
+                    {
+                        "description": "Dados do Pedido",
+                        "name": "pedido",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.PedidoRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/models.PedidoResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Erro na validação dos dados",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/pedidos/{id}": {
+            "get": {
+                "description": "Retorna um pedido específico baseado no ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "pedidos"
+                ],
+                "summary": "Busca um pedido por ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "ID do Pedido",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.PedidoResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Pedido não encontrado",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "Atualiza um pedido existente com os dados fornecidos",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "pedidos"
+                ],
+                "summary": "Atualiza um pedido existente",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "ID do Pedido",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Dados do Pedido",
+                        "name": "pedido",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.PedidoUpdateRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.PedidoResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Erro na validação dos dados",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "Pedido não encontrado",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "Deleta um pedido existente",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "pedidos"
+                ],
+                "summary": "Deleta um pedido",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "ID do Pedido",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    },
+                    "400": {
+                        "description": "Erro ao deletar pedido",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "Pedido não encontrado",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "models.Hamburguer": {
+            "type": "object",
+            "required": [
+                "descricao",
+                "preco"
+            ],
+            "properties": {
+                "descricao": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "ingredientes": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.HamburguerIngrediente"
+                    }
+                },
+                "preco": {
+                    "type": "number"
+                }
+            }
+        },
+        "models.HamburguerIngrediente": {
+            "type": "object",
+            "properties": {
+                "hamburguerID": {
+                    "type": "integer"
+                },
+                "item": {
+                    "$ref": "#/definitions/models.Item"
+                },
+                "itemID": {
+                    "type": "integer"
+                },
+                "quantidade": {
+                    "type": "integer"
+                }
+            }
+        },
+        "models.HamburguerRequest": {
+            "type": "object",
+            "required": [
+                "descricao",
+                "id",
+                "ingredientes",
+                "preco"
+            ],
+            "properties": {
+                "descricao": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "ingredientes": {
+                    "type": "array",
+                    "minItems": 1,
+                    "items": {
+                        "$ref": "#/definitions/models.IngredienteRequest"
+                    }
+                },
+                "preco": {
+                    "type": "number"
+                }
+            }
+        },
+        "models.HamburguerUpdateRequest": {
+            "type": "object",
+            "required": [
+                "descricao",
+                "ingredientes",
+                "preco"
+            ],
+            "properties": {
+                "descricao": {
+                    "type": "string"
+                },
+                "ingredientes": {
+                    "type": "array",
+                    "minItems": 1,
+                    "items": {
+                        "$ref": "#/definitions/models.IngredienteRequest"
+                    }
+                },
+                "preco": {
+                    "type": "number"
+                }
+            }
+        },
+        "models.IngredienteRequest": {
+            "type": "object",
+            "required": [
+                "id",
+                "quantidade"
+            ],
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "quantidade": {
+                    "type": "integer",
+                    "minimum": 1
+                }
+            }
+        },
+        "models.Item": {
+            "type": "object",
+            "properties": {
+                "descricao": {
+                    "type": "string"
+                },
+                "extra": {
+                    "description": "true para \"Com açúcar\" em bebidas ou \"Adicional\" em ingredientes",
+                    "type": "boolean"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "preco": {
+                    "type": "number"
+                },
+                "tipo": {
+                    "$ref": "#/definitions/models.TipoItem"
+                }
+            }
+        },
+        "models.ItemRequest": {
+            "type": "object",
+            "required": [
+                "descricao",
+                "extra",
+                "id",
+                "preco",
+                "tipo"
+            ],
+            "properties": {
+                "descricao": {
+                    "type": "string"
+                },
+                "extra": {
+                    "type": "boolean"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "preco": {
+                    "type": "number"
+                },
+                "tipo": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.ItemResponse": {
+            "type": "object",
+            "properties": {
+                "descricao": {
+                    "type": "string"
+                },
+                "extra": {
+                    "type": "boolean"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "preco": {
+                    "type": "number"
+                },
+                "tipo": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.ItemUpdateRequest": {
+            "type": "object",
+            "required": [
+                "descricao",
+                "extra",
+                "preco"
+            ],
+            "properties": {
+                "descricao": {
+                    "type": "string"
+                },
+                "extra": {
+                    "type": "boolean"
+                },
+                "preco": {
+                    "type": "number"
+                }
+            }
+        },
+        "models.PedidoBebida": {
+            "type": "object",
+            "properties": {
+                "bebida": {
+                    "$ref": "#/definitions/models.Item"
+                },
+                "itemID": {
+                    "type": "integer"
+                },
+                "pedidoID": {
+                    "type": "string"
+                },
+                "quantidade": {
+                    "type": "integer"
+                }
+            }
+        },
+        "models.PedidoHamburguer": {
+            "type": "object",
+            "properties": {
+                "hamburguer": {
+                    "$ref": "#/definitions/models.Hamburguer"
+                },
+                "hamburguerID": {
+                    "type": "integer"
+                },
+                "pedidoID": {
+                    "type": "string"
+                },
+                "quantidade": {
+                    "type": "integer"
+                }
+            }
+        },
+        "models.PedidoItemRequest": {
+            "type": "object",
+            "required": [
+                "id",
+                "quantidade"
+            ],
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "quantidade": {
+                    "type": "integer",
+                    "minimum": 1
+                }
+            }
+        },
+        "models.PedidoRequest": {
+            "type": "object",
+            "required": [
+                "descricao",
+                "endereco",
+                "hamburgueres",
+                "nome",
+                "telefone"
+            ],
+            "properties": {
+                "bebidas": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.PedidoItemRequest"
+                    }
+                },
+                "descricao": {
+                    "type": "string"
+                },
+                "endereco": {
+                    "type": "string"
+                },
+                "hamburgueres": {
+                    "type": "array",
+                    "minItems": 1,
+                    "items": {
+                        "$ref": "#/definitions/models.PedidoItemRequest"
+                    }
+                },
+                "nome": {
+                    "type": "string"
+                },
+                "observacoes": {
+                    "type": "string"
+                },
+                "telefone": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.PedidoResponse": {
+            "type": "object",
+            "properties": {
+                "bebidas": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.PedidoBebida"
+                    }
+                },
+                "data": {
+                    "type": "string"
+                },
+                "descricao": {
+                    "type": "string"
+                },
+                "endereco": {
+                    "type": "string"
+                },
+                "hamburgueres": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.PedidoHamburguer"
+                    }
+                },
+                "id": {
+                    "type": "string"
+                },
+                "nome": {
+                    "type": "string"
+                },
+                "observacoes": {
+                    "type": "string"
+                },
+                "status": {
+                    "$ref": "#/definitions/models.StatusPedido"
+                },
+                "telefone": {
+                    "type": "string"
+                },
+                "valor_total": {
+                    "type": "number"
+                }
+            }
+        },
+        "models.PedidoUpdateRequest": {
+            "type": "object",
+            "properties": {
+                "bebidas": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.PedidoItemRequest"
+                    }
+                },
+                "descricao": {
+                    "type": "string"
+                },
+                "endereco": {
+                    "type": "string"
+                },
+                "hamburgueres": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.PedidoItemRequest"
+                    }
+                },
+                "nome": {
+                    "type": "string"
+                },
+                "observacoes": {
+                    "type": "string"
+                },
+                "status": {
+                    "$ref": "#/definitions/models.StatusPedido"
+                },
+                "telefone": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.StatusPedido": {
+            "type": "string",
+            "enum": [
+                "STARTED",
+                "DELIVERY",
+                "FINALIZED"
+            ],
+            "x-enum-varnames": [
+                "StatusStarted",
+                "StatusDelivery",
+                "StatusFinalized"
+            ]
+        },
+        "models.TipoItem": {
+            "type": "string",
+            "enum": [
+                "BEBIDA",
+                "INGREDIENTE"
+            ],
+            "x-enum-varnames": [
+                "TipoBebida",
+                "TipoIngrediente"
+            ]
+        }
+    }
+}
