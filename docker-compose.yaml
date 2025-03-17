@@ -1,0 +1,12 @@
+version: '1'
+services:
+  postgres:
+    image: "postgres"
+    environment:
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=root
+      - POSTGRES_DB=lanchonete      
+    ports:
+      - "5432:5432"
+    volumes:
+      - /var/lib/postgresql/data
